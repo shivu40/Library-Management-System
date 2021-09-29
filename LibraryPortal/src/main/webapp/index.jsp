@@ -13,9 +13,22 @@
 	<input type="text" name="searchParameter">
 	<button type="submit" >search</button>
 	</form>
+	<br />member<br />
+	<form action="login?type=member" method="post">
+	id:<input type="text" name="id">
+	pass:<input type="text" name="pass">
+	<button type="submit" >login</button>
+	</form>
+	<br /><br />
 	
-	
-	<form action="addBook" method="post">
+	<br />staff<br />
+	<form action="login?type=staff" method="post">
+	id:<input type="text" name="uname">
+	pass:<input type="text" name="pass">
+	<button type="submit" >login</button>
+	</form>
+	<br /><br />
+	<form action="register" method="post">
 	isbn<input type="text" name="isbn">
 	title<input type="text" name="title">
 	copies_owned<input type="text" name="copies_owned">
