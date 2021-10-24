@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import lms.models.BookDetails;
 
@@ -40,6 +41,26 @@ public class BookDao {
 			st.setString(8, bookDetails.getAuthor_name());
 			st.setString(9,bookDetails.getCategory());
 			int result=st.executeUpdate();
+			st.close();
+			con.close();
+			return result;
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return 0;
+	}
+	
+	
+	public int deleteBook(long isbn) {
+		String deleteBookQuery= "delete from book where isbn="+isbn;
+		Connection con;
+		try {
+			con = getConnection();
+			Statement st=con.createStatement();
+			int result=st.executeUpdate(deleteBookQuery);
 			st.close();
 			con.close();
 			return result;

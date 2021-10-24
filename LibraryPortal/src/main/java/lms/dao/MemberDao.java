@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
+import java.sql.*;
 import lms.models.MemberModel;
 
 
@@ -40,6 +40,25 @@ public class MemberDao {
 			st.setInt(5, member.getActive_status());
 			st.setLong(6, member.getMobile_no());
 			int result=st.executeUpdate();
+			st.close();
+			con.close();
+			return result;
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return 0;
+	}
+	
+	public int deleteMember(int id) {
+		String deleteMemberQuery= "delete from member where id="+id;
+		Connection con;
+		try {
+			con = getConnection();
+			Statement st=con.createStatement();
+			int result=st.executeUpdate(deleteMemberQuery);
 			st.close();
 			con.close();
 			return result;
