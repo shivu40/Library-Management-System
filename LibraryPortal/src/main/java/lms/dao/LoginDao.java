@@ -70,4 +70,48 @@ try {
 		}
 		return false;
 	}
+	
+	
+	public String getMemberName(int id) {
+		String query="select name from member where id="+id;
+		String name="";
+		try {
+			
+			Connection con=getConnection();
+			Statement stmt=con.createStatement();
+			ResultSet rs=stmt.executeQuery(query);
+			
+			if(rs.next()) {				
+				name=rs.getString("name");
+			}
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return name;
+		
+	}
+	
+	public String getStaffName(String uname) {
+		String query="select name from staff_details where username='"+uname+"'";
+		String name="";
+		try {
+			
+			Connection con=getConnection();
+			Statement stmt=con.createStatement();
+			ResultSet rs=stmt.executeQuery(query);
+			
+			if(rs.next()) {				
+				name=rs.getString("name");
+			}
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return name;
+	}
 }

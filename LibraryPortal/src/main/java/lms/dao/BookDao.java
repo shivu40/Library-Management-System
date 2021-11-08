@@ -53,6 +53,34 @@ public class BookDao {
 		return 0;
 	}
 	
+	public int updateBook(BookDetails bookDetails,long isbn) {
+		String updateBookQuery="update book set title=?,copies_owned=?,edition=?,publisher_name=?,price=?,shelf_no=?,author_name=?,category=? where isbn=?";
+		Connection con;
+		try {
+			con = getConnection();
+			PreparedStatement st=con.prepareStatement(updateBookQuery);
+			
+			st.setString(1, bookDetails.getTitle());
+			st.setInt(2, bookDetails.getCopies_owned());
+			st.setInt(3,bookDetails.getEdition());
+			st.setString(4,bookDetails.getPublisher_name());
+			st.setInt(5, bookDetails.getPrice());
+			st.setInt(6, bookDetails.getShelf_no());
+			st.setString(7, bookDetails.getAuthor_name());
+			st.setString(8,bookDetails.getCategory());
+			st.setLong(9, isbn);
+			int result=st.executeUpdate();
+			st.close();
+			con.close();
+			return result;
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return 0;
+	}
 	
 	public int deleteBook(long isbn) {
 		String deleteBookQuery= "delete from book where isbn="+isbn;
@@ -72,5 +100,7 @@ public class BookDao {
 		
 		return 0;
 	}
+	
+	
 
 }

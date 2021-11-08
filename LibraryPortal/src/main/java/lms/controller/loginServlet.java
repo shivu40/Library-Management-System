@@ -44,10 +44,17 @@ public class loginServlet extends HttpServlet {
 			String pass=request.getParameter("pass");
 			boolean result=loginDao.isMemberValid(id, pass);
 			if(result==true) {
-				response.getWriter().println("valid member");
+				request.getSession().setAttribute("userId", id);
+				request.getSession().setAttribute("username", loginDao.getMemberName(id));
+			
+				request.getRequestDispatcher("memberHome.jsp").forward(request, response);
+//				response.getWriter().println("valid member");
 			}
 			else {
-				response.getWriter().println("invalid member");
+				
+//				response.getWriter().println("invalid member");
+				request.setAttribute("loginMessage", "Invalid Credentials");
+				request.getRequestDispatcher("index.jsp").forward(request, response);
 			}
 		}
 		else if(type.equals("staff")) {
@@ -55,10 +62,16 @@ public class loginServlet extends HttpServlet {
 			String pass=request.getParameter("pass");
 					boolean result=loginDao.isStaffValid(uname, pass);
 			if(result==true) {
-				response.getWriter().println("valid staff");
+				request.getSession().setAttribute("userId", uname);
+				request.getSession().setAttribute("username", loginDao.getStaffName(uname));
+			
+				request.getRequestDispatcher("adminHome.jsp").forward(request, response);
+//				response.getWriter().println("valid staff");
 			}
 			else {
-				response.getWriter().println("invalid staff");
+//				response.getWriter().println("invalid staff");
+				request.setAttribute("loginMessage", "Invalid Credentials!");
+				request.getRequestDispatcher("index.jsp").forward(request, response);
 			}
 		}
 	}

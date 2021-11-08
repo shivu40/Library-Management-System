@@ -53,8 +53,15 @@ public class addBookServlet extends HttpServlet {
 		BookDetails bookDetails=new BookDetails(isbn,title,copies_owned,edition,publisher_name,price,shelf_no,author_name,category);
 		BookDao bookDao=new BookDao();
 		int result=bookDao.addBook(bookDetails);
-		
-			System.out.println(result);
+		if(result>0) {
+			request.setAttribute("addBookMessage", "Book added Sucessfully!");			
+		}
+		else {
+			request.setAttribute("addBookMessage", "Error!");
+		}
+		System.out.println(result);
+		request.getRequestDispatcher("addBook.jsp").forward(request, response);
+			
 	}
 
 }

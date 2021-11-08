@@ -9,22 +9,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import lms.dao.IssueReturnDao;
-import lms.dao.SearchBookDao;
-import lms.models.BookDetails;
-import lms.models.BookModel;
+import lms.dao.FineDao;
+import lms.models.Fine;
 
 /**
- * Servlet implementation class searchServlet
+ * Servlet implementation class FineMemberServlet
  */
-@WebServlet("/search")
-public class searchServlet extends HttpServlet {
+@WebServlet("/FineMember")
+public class FineMemberServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public searchServlet() {
+    public FineMemberServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,13 +32,11 @@ public class searchServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
-		String parameter=request.getParameter("searchParameter");
-		SearchBookDao bookDao=new SearchBookDao();
-		ArrayList<BookDetails> searchBookResult=bookDao.searchByParam(parameter);
-		request.setAttribute("searchBookResult", searchBookResult);
-		request.getRequestDispatcher("searchBook.jsp").forward(request, response);
-		
+		int scholarId= (int) request.getSession().getAttribute("userId");
+		FineDao fineDao=new FineDao();
+		ArrayList<Fine> fineList=fineDao.getFineDetails(scholarId);	
+		request.setAttribute("bookList", fineList);
+		request.getRequestDispatcher("FineMemberView.jsp").forward(request, response);
 	}
 
 	/**

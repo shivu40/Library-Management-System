@@ -27,7 +27,7 @@ public class IssueReturnDao {
 		
 	}
 	
-	public void issueBook(int memberId,long isbn) {
+	public int issueBook(int memberId,long isbn) {
 		Borrow borrow= new Borrow();
 		LocalDate curDate= LocalDate.now();
 		borrow.setDue_date(curDate.plusDays(10).toString());
@@ -36,7 +36,7 @@ public class IssueReturnDao {
 		borrow.setMember_id(memberId);
 		String issueBookQuery="insert into borrow (due_date,issue_date,book_isbn,member_id) values(?,?,?,?)";
 		String updateCountQuery="update book set copies_owned =copies_owned-1 where isbn="+isbn;
-		
+		int result=0;
 		Connection con=null;
 		try {
 			con = getConnection();
@@ -49,7 +49,7 @@ public class IssueReturnDao {
 			issueBook.setInt(4, borrow.getMember_id());
 			
 			issueBook.executeUpdate();
-			updateCount.executeUpdate(updateCountQuery);
+			result=updateCount.executeUpdate(updateCountQuery);
 		
 			con.commit();
 			System.out.println("Book occured issued successfully");
@@ -67,14 +67,15 @@ public class IssueReturnDao {
 			e.printStackTrace();
 		}
 		
-		
+		return result;
 	}
 	
-	public int returnBook(int borrowId) {
+	public int returnBook(int borrowId, int scholarId) {
 		String updateCountQuery="update book set copies_owned =copies_owned+1 where isbn=?";
 		String returnBookQuery="update borrow set return_date=? where id=?";
 		String getIsbnQuery="select book_isbn from borrow where id=?";
 		Connection con=null;
+		int result=0;
 		try {
 			con = getConnection();
 			con.setAutoCommit(false);
@@ -95,8 +96,13 @@ public class IssueReturnDao {
 			returnBook.executeUpdate();
 			
 			updateCount.setLong(1, isbn);
-			updateCount.executeUpdate();
+			result=updateCount.executeUpdate();
+			
+			
 			con.commit();
+			
+			FineDao fd=new FineDao();
+			fd.addFine(borrowId, scholarId);
 			System.out.println("Book Return successfully");
 			
 			
@@ -111,6 +117,6 @@ public class IssueReturnDao {
 			}
 			e.printStackTrace();
 		}
-		return 0;
+		return result;
 	}
 }
